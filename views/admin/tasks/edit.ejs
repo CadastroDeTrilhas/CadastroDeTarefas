@@ -1,0 +1,48 @@
+<%- include ('../../partials/header.ejs') %>
+<%- include ('../../partials/adminNavbar.ejs') %>
+
+<br>
+<div class="container" style="background-color: #ffffff;">
+    <br>
+    <div class="card">
+        <div class="card-header">
+            <h2>Editar tarefa</h2>
+        </div>
+        <div class="card-body">
+            <form ref='uploadForm' id='uploadForm' action='/admin/task/update' method='post' encType="multipart/form-data">
+
+                <% if(task.num == 0){ %>
+                    <input type="text" class="form-control" name="number" placeholder="Numero da tarefa"><br>
+                <% } else{ %>
+                    <input type="text" class="form-control" name="number" value="<%= task.num %>"><br>
+                <% } %>
+
+                <input type="file" name="file" >
+                
+                <hr><label>Matéria</label>
+                <select name="subId" class="form-control">
+                    <% subjects.forEach((subject) => { %>
+                        <% if(subject.id == task.subjectId){ %>
+                            <option value="<%= subject.id %>"><%= subject.title %></option>
+                        <%}%>
+                    <% }) %>
+                    <% subjects.forEach((subject) => { %>
+                        <% if(subject.id != task.subjectId){ %>
+                            <option value="<%= subject.id %>"><%= subject.title %></option>
+                        <% } %>
+                    <% }) %>
+                </select>
+
+                <br>
+
+                <input type="hidden" name="delKey" value="<%= task.key %>">
+                <input type="hidden" name="id" value="<%= task.id %>">
+                <button class="btn btn-primary">Editar</button>
+            </form>
+        </div>
+    </div>
+    <br>
+
+</div>
+
+<%- include ('../../partials/footer.ejs') %>

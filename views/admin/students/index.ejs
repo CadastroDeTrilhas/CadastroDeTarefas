@@ -1,0 +1,32 @@
+<%- include ('../../partials/header.ejs') %>
+<%- include ('../../partials/adminNavbar.ejs') %>
+
+<br>
+<div class="container" style="background-color: #ffffff;">
+    <br>
+    <h1>Alunos</h1><br>
+    <a href="/admin/students/new" class="btn btn-primary">Cadastrar novo aluno</a>
+    <hr>
+
+    <div class="container">
+
+        <% students.forEach(student => { %>
+
+            <div class="card">
+
+                <div class="card-header">
+                    <h2><%= student.name %></h2>
+                </div>
+
+                <div class="card-body">
+                    <a href="/admin/students/student/<%= student.id %>" class="btn btn-primary">Ver aluno</a>
+                </div>
+            </div>
+            <br>
+        <% }) %>   
+
+    </div>
+    
+</div>
+
+<%- include ('../../partials/footer.ejs') %>

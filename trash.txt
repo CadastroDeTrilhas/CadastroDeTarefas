@@ -1,0 +1,218 @@
+
+function checkHowManyTasks(data){
+    return new Promise(resolve => {
+
+        var tasks = []
+
+        for( i = 0; i < data.subjects.length; i++){
+
+            Task.findAndCountAll({
+                where: {
+                    subjectId: data.subjects[i],
+                    levelId: data.levels[i]
+                }
+            }).then(task => {
+
+                if(task.count > 0){
+
+                    var subject = task.rows[0].subjectId
+                    var level = task.rows[0].levelId
+                    var count = task.count
+                    
+                    tasks.push({
+                        subject,
+                        level,
+                        count
+                    })
+
+                }else{
+                    resolve(null)
+                }
+                
+                if(tasks.length == data.subjects.length){
+                    resolve(tasks)
+                }
+                
+            })
+        }
+
+    })
+}
+
+function checkSubjectkHistory(data){
+
+    return new Promise( resolve => {
+
+        var subjects = []
+
+        for( i = 0; i < data.subjects.length; i++){
+
+            SubjectHistory.findAll({
+
+                where:{
+                    studentId: data.studentId,
+                    subject: data.subjects[i]
+                }
+            }).then(historyResul => {
+
+                if(historyResul.length == 0){
+                    subjects.push(undefined)
+                }else{
+                    subjects.push(historyResul[0].get())
+                }
+
+                if(subjects.length == data.subjects.length){
+                    resolve(subjects)
+                }
+            })
+        }
+    })
+}
+
+function promiseCheckTasks(data){
+
+    return new Promise(resolve => {
+
+        var count = data.subjects.length
+
+        for( i = 0; i < data.subjects.length; i++){
+
+            var subjectId = data.subjects[i]
+
+            Task.findAndCountAll({
+                where: {
+                    subjectId: data.subjects[i],
+                    levelId: data.levels[i]
+                }
+            }).then(taskResul => {
+
+                console.log(subjectId)
+
+                SubjectHistory.findAll({
+
+                    where:{
+                        studentId: data.studentId,
+                        subject: subjectId
+                    }
+                }).then(historyResul => {
+
+                    howManyTask = (historyResul.index + data.howManyTasks[i])
+
+                    if( (taskResul.count == 0) || (howManyTask > taskResul.count)){
+                        resolve(false)
+                    }
+    
+                    count -= 1
+    
+                    if(count == 0){
+                        resolve(true)
+                    }
+
+                })
+            })
+        }
+    })
+}
+
+function promiseTrail(data){
+
+    return new Promise(resolve => {
+
+        Trail.create({
+            number: data.number,
+            studentId: data.studentId
+        }).then(trail => {
+            resolve(trail.id)
+        })
+    })
+}
+
+function promiseAuxTrail(data, trailId){
+
+    return new Promise(resolve => {
+
+        SubjectHistory.findAll({
+            where: {studentId: data.studentId}
+        }).then( subjectsHistory => {
+            
+            if(subjectsHistory.length == 0){
+                for(var i = 0; i < data.howManySubjects; i++){
+
+                    AuxTrail.create({
+                        subject: data.subjects[i],
+                        howManyTask: data.howManyTasks[i],
+                        index: 1,
+                        level: data.levels[i],
+                        trailId: trailId
+                    })
+
+                    SubjectHistory.create({
+                        subject: data.subjects[i],
+                        index: (parseInt(data.howManyTasks[i], 10) + 1),
+                        level: data.levels[i],
+                        studentId: data.studentId
+                    })
+                }
+
+            } else {
+
+            }
+        })
+    })
+}
+
+async function saveTrail(data){
+
+    const tasks = await checkHowManyTasks(data)
+    
+    if(tasks == null){
+        return null
+    }
+
+    const subjectkHistory = await checkSubjectkHistory(data)
+
+    for(i = 0; i < data.subjects.length; i++){
+        
+    }
+    
+    //const trailId = await promiseTrail(data)
+    //const resul = await promiseAuxTrail(data, trailId)
+
+    return null//trailId
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*
+    Trail.findAndCountAll({
+        where:{
+            studentId: studentId
+        }
+    }).then( trails => {
+
+        var data = {
+            number: (trails.count + 1),
+            studentId,
+            howManySubjects,
+            subjects,
+            howManyTasks,
+            levels
+        }
+
+        saveTrail(data).then( resul => {
+            console.log(resul)
+        })
+        
+    })
+*/

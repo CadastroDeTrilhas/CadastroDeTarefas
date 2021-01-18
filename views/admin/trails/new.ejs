@@ -1,0 +1,56 @@
+<%- include ('../../partials/header.ejs') %>
+<%- include ('../../partials/adminNavbar.ejs') %>
+
+<br>
+<div class="container" style="background-color: #ffffff;">
+    <br>
+    <div class="card">
+        <div class="card-header">
+            <h1>Cadastro de trilhas</h1>
+        </div>
+        <div class="card-body">
+
+            <% if(!numSubjects){ %>
+                <h5>Numero de matérias</h5>
+                <form action="/admin/trails/new" method="post" style="display: inline;">
+                    <input type="hidden" name="studentId" value="<%= studentId %>">
+                    <input type="text" name="numSubjects" placeholder="Numero de matérias da trilha">
+                    <button class="btn btn-primary">Enviar</button>
+                </form>
+            <% } %>
+
+            <form action="/admin/trails/save" method="post">
+                <% if(numSubjects){ %>
+                    <div class="card-body">
+                        <% for(var i=0; i <  numSubjects ; i++){%>
+                            <h3>Tarefa <%= i+1 %> </h3>
+                            <div class="card-body">
+                                <select name="subject" class="form-control">
+                                    <% subjects.forEach((subject) => { %>
+                                        <option value="<%= subject.id %>"><%= subject.title %></option>
+                                    <% }) %> 
+                                </select>
+                                <input type="number" name="howManyTasks" placeholder="Numero de tarefas">
+                                <input type="number" name="tasksIndex" placeholder="Indice">
+                                <select name="level" class="form-control">
+                                    <% levels.forEach((level) => { %>
+                                        <option value="<%= level.id %>"><%= level.title %></option>
+                                    <%})%>
+                                </select>
+                            </div>
+                            <hr>
+                        <% } %>
+                        <br>
+                        <input type="hidden" name="numSubjects" value="<%= numSubjects %>">
+                        <input type="hidden" name="studentId" value="<%=studentId%>">
+                        <button class="btn btn-primary">Gravar</button>
+                <% } %>
+                    </div>
+            </form>          
+        </div>
+        <br>
+    </div>
+    <hr>
+</div>
+
+<%- include ('../../partials/footer.ejs') %>

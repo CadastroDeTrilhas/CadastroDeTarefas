@@ -1,0 +1,26 @@
+<%- include ('../../partials/header.ejs') %>
+<%- include ('../../partials/adminNavbar.ejs') %>
+
+<body>
+    
+    <div class="container bg-light">
+
+        <hr>
+        <div class="card">
+            <div class="card-header">
+                <h2>Cadastro de matérias</h2>
+            </div>
+            <div class="card-body">
+                <form action="/subjects/update" method="post">
+                    <input type="text" class="form-control" name="subject" placeholder="Defina o nome da matéria" value="<%= subject.title %>"><br>
+                    <input type="hidden" name="id" value="<%= subject.id %>">
+                    <button class="btn btn-primary">Cadastrar</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+</body>
+
+<%- include ('../../partials/footer.ejs') %>

@@ -1,0 +1,20 @@
+<%- include ('../../partials/header.ejs') %>
+<%- include ('../../partials/adminNavbar.ejs') %>
+
+<div class="container">
+    <hr>
+    <div class="card">
+        <div class="card-header">
+            <h2>Cadastro de níveis</h2>
+        </div>
+        <div class="card-body">
+            <form action="/admin/levels/save" method="post">
+                <input type="text" class="form-control" name="title" placeholder="Defina o título do nível">
+                <br>
+                <button class="btn btn-primary">Cadastrar</button>
+            </form>
+        </div>      
+    </div>
+</div>
+
+<%- include ('../../partials/footer.ejs') %>

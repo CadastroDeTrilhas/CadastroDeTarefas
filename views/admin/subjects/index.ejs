@@ -1,0 +1,42 @@
+<%- include ('../../partials/header.ejs') %>
+<%- include ('../../partials/adminNavbar.ejs') %>
+
+
+<br>  
+<div class="container" style="background-color: #ffffff;">
+    <br>
+    <h2>Matérias</h2><br>
+    <a class="btn btn-primary" href="/admin/subjects/new">Criar nova matéria</a>
+    <hr>
+
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Matéria</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% subjects.forEach(subject => { %>
+                <tr>
+                    <td><%= subject.title %></td>
+                    <td>
+                        <a href="/admin/tasks/<%=subject.id%>" class="btn btn-primary">Tarefas</a>
+                        <a href="/admin/subjects/edit/<%= subject.id %>" class="btn btn-primary">Editar</a>
+
+                        <form action="/admin/subjects/delete" method="post" style="display: inline;">
+                            <input type="hidden" name="id" value="<%= subject.id %>">
+                            <button class="btn btn-danger">Deletar</button>
+                        </form>
+                    </td>
+                </tr>
+            <%})%>
+        </tbody>
+    </table>
+    <hr>
+</div>
+
+
+
+
+<%- include ('../../partials/footer.ejs') %>

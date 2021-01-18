@@ -1,0 +1,37 @@
+<%- include ('../../partials/header.ejs') %>
+<%- include ('../../partials/adminNavbar.ejs') %>
+
+<br>
+<div class="container" style="background-color: #ffffff;">
+
+    <br>
+    <h1>Tarefas</h1><br>
+    <form action="/admin/tasks/new" method="post">
+        <input type="hidden" name="nextNum" value="0">
+        <input type="hidden" name="subId" value="0">
+        <button class="btn btn-primary">Criar nova tarefa</button>
+    </form>
+    <hr>
+    <br>
+    <div class="container">
+
+        <% tasks.forEach(task => { %>
+
+            <div class="card">
+    
+                <div class="card-header">
+                    <h2>Tarefa <%= task.num %> - <%= task.subject.title %></h2>
+                </div>
+    
+                <div class="card-body">
+                    <a href="/admin/task/<%= task.id %>" class="btn btn-primary">Ver tarefa</a>
+                </div>
+            </div>
+            <br>
+        <% }) %> 
+
+    </div>
+    <hr>
+</div>
+
+<%- include ('../../partials/footer.ejs') %>
