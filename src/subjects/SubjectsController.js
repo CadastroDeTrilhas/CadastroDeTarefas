@@ -3,20 +3,23 @@ const router = express.Router()
 const Subject = require('./Subject')
 const SubjectHistory = require('./SubjectsHistory')
 const slugify = require('slugify')
+const adminAuth = require('../middleware/adminAuth')
 
-router.get('/admin/subjects', (req, res) => {
+router.get('/admin/subjects', adminAuth, (req, res) => {
 
-    Subject.findAll().then( subjects => {
+    Subject.findAll({
+        order: [['slug']]
+    }).then( subjects => {
         res.render('admin/subjects/index', {subjects})
     })
     
 })
 
-router.get('/admin/subjects/new', (req, res) => {
+router.get('/admin/subjects/new', adminAuth, (req, res) => {
     res.render('admin/subjects/new')
 })
 
-router.post('/subjects/save', (req, res) => {
+router.post('/subjects/save', adminAuth, (req, res) => {
 
     var title = req.body.subject
     var slug = slugify(title)
@@ -44,7 +47,7 @@ router.post('/subjects/save', (req, res) => {
     }
 })
 
-router.get('/admin/subjects/edit/:id', (req, res) => {
+router.get('/admin/subjects/edit/:id', adminAuth, (req, res) => {
     
     var id = req.params.id
 
@@ -66,10 +69,10 @@ router.get('/admin/subjects/edit/:id', (req, res) => {
     }
 })
 
-router.post('/subjects/update', (req, res) => {
+router.post('/subjects/update', adminAuth, (req, res) => {
 
     var id = req.body.id
-    var title = req.body.title
+    var title = req.body.subject
     var slug = slugify(title)
 
     Subject.update({title: title, slug: slug}, {
@@ -81,7 +84,7 @@ router.post('/subjects/update', (req, res) => {
     })
 })
 
-router.post('/admin/subjects/delete', (req, res) => {
+router.post('/admin/subjects/delete', adminAuth, (req, res) => {
 
     var id = req.body.id
 

@@ -1,0 +1,43 @@
+<%- include ('../partials/header.ejs') %>
+<%- include ('../partials/userNavbar.ejs') %>
+
+<br>
+<div class="container" style="background-color: #ffffff;">
+    <br>
+    <h1><%= student.name %></h1>
+    <h5><%= student.email %></h5>
+    <hr>
+
+    <div class="container">
+
+        <input type="hidden" namme="flag" value="<%= flag = true %>">
+        <% trails.forEach(trail => { %>
+            <% if(flag){ %>
+                <div class="card">
+                    <div class="card-header">
+                        <h2>Trilha <%= trail.number %></h2>
+                    </div>
+                    <div class="card-body">
+                        <a href="/user/trailPdf/<%= trail.id %>" class="btn btn-primary">Ver trilha</a>
+                        <input type="hidden" namme="flag" value="<%= flag = false %>">
+                    </div>
+                </div>
+                <br>
+            <% }else{ %>
+                <div class="card">
+                    <div class="card-header">
+                        <h2>Trilha <%= trail.number %></h2>
+                    </div>
+                    <div class="card-body">
+                        <a href="/user/trailPdf/<%= trail.id %>" class="btn btn-primary">Ver trilha</a>
+                    </div>
+                </div>
+                <br>
+            <% } %>
+        <% }) %> 
+
+    </div>
+    
+</div>
+  
+<%- include ('../partials/footer.ejs') %>

@@ -1,19 +1,28 @@
 const Sequelize = require('sequelize')
-const connection = require('../database/database') 
-const Student = require('../students/Students')
-const Task = require('../tasks/Task')
+const connection = require('../database/database')
+const TrailsLink = require('./TrailsLink')
 
-const Trail = connection.define('trails', {
-    number:{
+const Trails = connection.define('trail', {
+
+    subject:{
         type: Sequelize.INTEGER,
         allowNull:false
+    }, howManyTask:{
+        type: Sequelize.INTEGER,
+        allowNull: false
+    },index:{
+        type: Sequelize.INTEGER,
+        allowNull: false
+    },level:{
+        type: Sequelize.INTEGER,
+        allowNull: false
     }
 })
 
-Student.hasMany(Trail)
-Trail.belongsTo(Student)
+TrailsLink.hasMany(Trails)
+Trails.belongsTo(TrailsLink)
 
 // Linha usada somente para criar a tabela no BD
-// Trail.sync({force:true})
+// Trails.sync({force:true})
 
-module.exports = Trail
+module.exports = Trails

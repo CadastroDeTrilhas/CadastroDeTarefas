@@ -8,32 +8,67 @@
     <h5><%= student.email %></h5>
     <hr>
 
-    <form action="/admin/trails/new" method="post" style="display: inline;">
-        <input type="hidden" name="studentId" value="<%= student.id %>">
-        <button class="btn btn-primary">Cadastrar nova trilha</button>
-    </form>
-
+    <a href="/admin/trails/howMany/<%= student.id %>" class="btn btn-primary">Cadastrar nova trilha</a>
+    <% if(automaticTrail){%>
+        <button class="btn btn-primary" onclick="openPopup(event)">Gerar Trilha automática</button>
+    <% }%>
+    <a href="/admin/student/planning/<%=student.id %>" class="btn btn-primary">Planejamento</a>
     <hr>
 
     <div class="container">
 
+        <input type="hidden" namme="flag" value="<%= flag = true %>">
         <% trails.forEach(trails => { %>
-
-            <div class="card">
-    
-                <div class="card-header">
-                    <h2>Trilha <%= trails.number %></h2>
+            <% if(flag){ %>
+                <div class="card">
+                    <div class="card-header">
+                        <h2>Trilha <%= trails.number %></h2>
+                    </div>
+                    <div class="card-body">
+                        <a href="/admin/trail/view/<%= trails.id %>/<%= student.id %>/<%= 1 %>" class="btn btn-primary">Ver trilha</a>
+                        <input type="hidden" namme="flag" value="<%= flag = false %>">
+                    </div>
                 </div>
-    
-                <div class="card-body">
-                    <a href="/admin/trails/<%= trails.id %>" class="btn btn-primary">Ver trilha</a>
+                <br>
+            <% }else{ %>
+                <div class="card">
+                    <div class="card-header">
+                        <h2>Trilha <%= trails.number %></h2>
+                    </div>
+                    <div class="card-body">
+                        <a href="/admin/trail/view/<%= trails.id %>/<%= student.id %>/<%= -1 %>" class="btn btn-primary">Ver trilha</a>
+                    </div>
                 </div>
-            </div>
-            <br>
+                <br>
+            <% } %>
         <% }) %> 
 
     </div>
     
 </div>
 
+<div id="myModal" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm">
+      <div class="modal-content">
+          <div class="modal-header">
+              <h3 class="Modal-title">Editar a trilha?</h3>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+          </div>
+          <div class="modal-footer">
+            <a href="/admin/trail/new/edit/<%=student.id %>" class="btn btn-primary">Sim</a>
+            <a href="/admin/trail/trailsGen/<%=student.id %>" class="btn btn-primary">Não</a>
+          </div>
+      </div>
+    </div>
+</div>
+  
+
 <%- include ('../../partials/footer.ejs') %>
+
+<Script>
+    function openPopup(event){
+        $('#myModal').modal('show');
+    }
+</Script>

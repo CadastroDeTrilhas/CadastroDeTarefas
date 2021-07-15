@@ -1,0 +1,26 @@
+<%- include ('../../partials/header.ejs') %>
+<%- include ('../../partials/adminNavbar.ejs') %>
+
+<br>
+<div class="container" style="background-color: #ffffff;">
+    <br>
+    <div class="card-header">
+        <h1>Cadastro de trilhas</h1>
+    </div>
+    <div class="card-body">
+
+        <form action="/admin/trails/new" method="post">
+            <h5>Trilha:</h5>
+            <input type="text" name="trailNum" value="<%= trailNum %>">
+            <br><br><br>
+            <h5>Quantidade de matérias:</h5>
+            <input type="text" name="howManySubjects" placeholder="Numero de matérias da trilha">
+            <input type="hidden" name="studentId" value="<%= studentId %>">
+            <button class="btn btn-danger">Enviar</button>
+        </form>
+
+    </div>
+
+</div>
+
+<%- include ('../../partials/footer.ejs') %>

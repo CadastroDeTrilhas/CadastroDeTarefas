@@ -13,6 +13,6 @@ const Subject = connection.define('subjects', {
 })
 
 // Linha usada somente para criar tabela no BD
-// Subject.sync({force:false})
+// Subject.sync({force:true})
 
 module.exports = Subject

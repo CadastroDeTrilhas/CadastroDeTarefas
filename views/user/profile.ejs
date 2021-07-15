@@ -1,0 +1,24 @@
+<%- include ('../partials/header.ejs') %>
+<%- include ('../partials/userNavbar.ejs') %>
+
+<br>
+<div class="container" style="background-color: #ffffff;">
+    <br>
+    <div class="card">
+        <div class="card-header">
+            <h2>Perfil</h2>
+        </div>
+        <div class="card-body">
+            <form  action="/user/edit" method="get" id="data">
+
+                <label  type="text" class="form-control" ><%= user.name%></label>
+                <label  type="text" class="form-control" ><%= user.email%></label>
+                <br>
+                <button class="btn btn-primary">editar</button>
+            </form>
+        </div>
+    </div>
+    <br>
+</div>
+
+<%- include ('../partials/footer.ejs') %>

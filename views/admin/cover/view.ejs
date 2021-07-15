@@ -1,0 +1,32 @@
+<%- include ('../../partials/header.ejs') %>
+<%- include ('../../partials/adminNavbar.ejs') %>
+
+<br>
+<div class="container" style="background-color: #ffffff;">
+    <br>
+    <div class="card">
+        <div class="card-header">
+            <h1><%= cover.name %></h1><br>
+
+            <a href="/admin/cover/edit/<%= cover.id %>" class="btn btn-primary">Editar</a>
+            <a href="/admin/cover/delete/<%= cover.id %>" class="btn btn-danger">Deletar</a>
+
+        </div>
+        <br>
+        <div class="card_body">
+            <br>
+            <div class="container" align="center">
+                <embed src="<%= cover.url %>" width="700" height="970" type='application/pdf'>
+            </div>
+            
+            <input type="hidden" name="key">
+            <input type="hidden" name="id" value="<%= cover.id %>">
+
+        </div>
+
+    </div>
+    <br>
+
+</div>
+
+<%- include ('../../partials/footer.ejs') %>

@@ -3,10 +3,19 @@ const connection = require('../database/database')
 const Student = require('../students/Students')
 
 const LastTrail = connection.define('lastTrail', {
-    howManySubjects:{
+    howManyTasks:{
+        type: Sequelize.SMALLINT,
+        allowNull: false
+    }, index:{
+        type: Sequelize.SMALLINT,
+        allowNull: false
+    }, subjectId:{
         type: Sequelize.INTEGER,
-        allowNull:false
-    } 
+        allowNull: false
+    }, level: {
+        type: Sequelize.SMALLINT,
+        allowNull: false
+    }
 })
 
 

@@ -10,6 +10,7 @@
     <a href="/admin/task/edit/<%= task.id %>" class="btn btn-primary">Editar</a>
 
     <form action="/admin/task/delete" method="post" style="display: inline;">
+        <input type="hidden" name="level" value="<%= task.levelId %>">
         <input type="hidden" name="id" value="<%= task.id %>">
         <input type="hidden" name="key" value="<%= task.key %>">
         <input type="hidden" name="subId" value="<%= task.subjectId %>">

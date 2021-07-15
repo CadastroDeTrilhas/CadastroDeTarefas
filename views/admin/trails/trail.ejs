@@ -1,0 +1,30 @@
+<%- include ('../../partials/header.ejs') %>
+<%- include ('../../partials/adminNavbar.ejs') %>
+
+<br>
+<div class="container" style="background-color: #ffffff;">
+
+    <br>
+    <h1>Trilha <%= trailNum%></h1>
+    <%if(current >= 1){ %>
+        <a href="/admin/trail/edit/<%= trailId %>/<%= studentId %>" class="btn btn-primary">Editar</a>
+    <% } %>
+    <a href="/admin/trail/delete/<%= trailId %>/<%= studentId %>" class="btn btn-danger">Apagar</a>
+    <a href="/admin/trailPdf/<%= trailId %>/<%= studentId %>" class="btn btn-primary">Gerar Pdf</a>
+    <div class="card-body" ></div>
+    <div class="card-header" style="border: 1px solid rgb(155, 154, 154)">
+        <% trail.forEach(resul => {%>
+            <div class="card-body">
+                <h3><%= subjects[1][subjects[0].indexOf(resul.subject)] %></h3>
+                <h5>Nível: <%= levels[1][levels[0].indexOf(resul.level)] %></h5>
+                <h5>Numero de tarefas: <%= resul.howManyTask %></h5>
+                <h5>Tarefas: <%= tasks[1][tasks[0].indexOf(resul.subject)] %></h5>
+            </div><hr> 
+        <% }) %>        
+    </div>
+    <br>
+</div>
+
+<%= %>
+
+<%- include ('../../partials/footer.ejs') %>

@@ -13,6 +13,6 @@ const Level = connection.define('levels', {
 })
 
 // Linha usada somente para criar a tabela no BD
-// Level.sync({force:false})
+// Level.sync({force:true})
 
 module.exports = Level

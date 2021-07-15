@@ -6,46 +6,56 @@
     <br>
     <div class="card">
         <div class="card-header">
-            <h1>Cadastro de trilhas</h1>
-        </div>
-        <div class="card-body">
-
-            <% if(!numSubjects){ %>
-                <h5>Numero de matérias</h5>
-                <form action="/admin/trails/new" method="post" style="display: inline;">
-                    <input type="hidden" name="studentId" value="<%= studentId %>">
-                    <input type="text" name="numSubjects" placeholder="Numero de matérias da trilha">
-                    <button class="btn btn-primary">Enviar</button>
-                </form>
-            <% } %>
 
             <form action="/admin/trails/save" method="post">
-                <% if(numSubjects){ %>
-                    <div class="card-body">
-                        <% for(var i=0; i <  numSubjects ; i++){%>
-                            <h3>Tarefa <%= i+1 %> </h3>
-                            <div class="card-body">
-                                <select name="subject" class="form-control">
-                                    <% subjects.forEach((subject) => { %>
+                
+                <div class="card-body">
+
+                    <% if(msg != undefined){%>
+                    <h2 style="color: red;"><%= msg %></h2>
+                    <br><br>
+                    <% }%>
+
+                    <h3>Capa</h3>
+                    <select name="coverId" class="form-control">
+                        <% covers.forEach((cover) => { %>
+                            <option value="<%= cover.id %>"><%= cover.name %></option>
+                        <% }) %> 
+                    </select>
+                    <br><hr>
+                    <% for(var i=0; i <  howManySubjects ; i++){%>
+                        <h3>Tarefa <%= i+1 %> </h3>
+                        <div class="card-body">
+                            <select name="subjectsId" class="form-control" >
+                                <% subjects.forEach((subject) => { %>
+                                    <% if(subjectsControl[i] == subject.id){%>
+                                        <option value="<%= subject.id %>" selected><%= subject.title %></option>
+                                    <% }else{%>
                                         <option value="<%= subject.id %>"><%= subject.title %></option>
-                                    <% }) %> 
-                                </select>
-                                <input type="number" name="howManyTasks" placeholder="Numero de tarefas">
-                                <input type="number" name="tasksIndex" placeholder="Indice">
-                                <select name="level" class="form-control">
-                                    <% levels.forEach((level) => { %>
+                                    <% } %>
+                                <% }) %> 
+                            </select>
+                            <input type="number" name="howManyTasks" placeholder="Numero de tarefas" value="<%= howManyTasks[i] %>">
+                            <input type="number" name="tasksIndex" placeholder="índice" value="<%= tasksIndex[i] %>">
+                            <select name="levelsId" class="form-control">
+                                <% levels.forEach((level) => { %>
+                                    <% if(levelsControl[i] == level.id){%>
+                                        <option value="<%= level.id %>" selected><%= level.title %></option>
+                                    <% }else{%>
                                         <option value="<%= level.id %>"><%= level.title %></option>
-                                    <%})%>
-                                </select>
-                            </div>
-                            <hr>
-                        <% } %>
-                        <br>
-                        <input type="hidden" name="numSubjects" value="<%= numSubjects %>">
-                        <input type="hidden" name="studentId" value="<%=studentId%>">
-                        <button class="btn btn-primary">Gravar</button>
-                <% } %>
-                    </div>
+                                    <% }%>
+                                    
+                                <%})%>
+                            </select>
+                        </div>
+                        <hr>
+                    <% } %>
+                    <br>
+                    <input type="hidden" name="trailNum" value="<%= trailNum %>">
+                    <input type="hidden" name="howManySubjects" value="<%= howManySubjects %>">
+                    <input type="hidden" name="studentId" value="<%=studentId%>">
+                    <button class="btn btn-primary">Gravar</button> 
+                </div>
             </form>          
         </div>
         <br>

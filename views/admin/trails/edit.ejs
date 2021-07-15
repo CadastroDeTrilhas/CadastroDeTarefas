@@ -1,0 +1,138 @@
+<%- include ('../../partials/header.ejs') %>
+<%- include ('../../partials/adminNavbar.ejs') %>
+
+<br>
+<div class="container" style="background-color: #ffffff;">
+    <br>
+    <div class="card">
+        <div class="card-header">
+
+            <form id="data" action="/admin/trail/edit/sum" method="post">
+                
+                <div class="card-body">
+
+                    <h3>Capa</h3>
+                    <select name="coverId" class="form-control">
+                        <% covers.forEach((cover) => { %>
+                            <option value="<%= cover.id %>"><%= cover.name %></option>
+                        <% }) %> 
+                    </select>
+                    <br><hr>
+                    <% for(var i=0; i <  howManySubjects ; i++){%>
+                        <h3>Tarefa <%= i+1 %> </h3><button class="btn btn-outline-secondary" onclick="deleteTask(<%=i%>)">Apagar Materia</button>
+                        <div class="card-body">
+                            <select name="subjectsId" class="form-control" i>
+                                <% subjects.forEach((subject) => { %>
+                                    <% if(subjectsControl[i] == subject.id){%>
+                                        <option value="<%= subject.id %>" selected><%= subject.title %></option>
+                                    <% }else{%>
+                                        <option value="<%= subject.id %>"><%= subject.title %></option>
+                                    <% } %>
+                                <% }) %> 
+                            </select>
+                            <input type="number" name="howManyTasks" placeholder="Numero de tarefas" value="<%= howManyTasks[i] %>">
+                            <input type="number" name="tasksIndex" placeholder="índice" value="<%= tasksIndex[i] %>">
+                            <select name="levelsId" class="form-control">
+                                <% levels.forEach((level) => { %>
+                                    <% if(levelsControl[i] == level.id){%>
+                                        <option value="<%= level.id %>" selected><%= level.title %></option>
+                                    <% }else{%>
+                                        <option value="<%= level.id %>"><%= level.title %></option>
+                                    <% }%>
+                                    
+                                <%})%>
+                            </select>
+                        </div>
+                        <hr>
+                    <% } %>
+                    <br>
+                    <input type="hidden" name="trailNum" value="<%= trailNum %>">
+                    <input type="hidden" name="howManySubjects" value="<%= howManySubjects %>">
+                    <input type="hidden" name="studentId" value="<%=studentId%>">
+                    <input type="hidden" name="covers" value="<%= covers %>">
+                    <button class="btn btn-primary">Adicionar Materia</button>
+                    <button class="btn btn-primary" onclick="checkData(event)">Gravar</button>
+                    <br><br>
+                    <div id="msg" style="color: red;"></div>
+                </div>
+            </form>          
+        </div>
+        <br>
+    </div>
+    <hr>
+</div>
+
+
+
+<%- include ('../../partials/footer.ejs') %>
+
+<script src="https://code.jquery.com/jquery-3.5.0.js"></script>
+<script>
+    function displayMsg(id, data){
+        const text = JSON.stringify(data)
+        document.getElementById(id).innerHTML = text
+    }
+
+    function saveTrail(studentId){
+        $.ajax({
+            url: '/admin/trails/save',
+            method: 'post',
+            data: $('#data').serializeArray(),
+            success(data){
+                window.location.replace(`/admin/student/view/${studentId}`)
+            } 
+        })
+    }
+
+    function checkData(event){
+        event.preventDefault()
+        $.ajax({
+            url: '/admin/trail/checkData',
+            method: 'post',
+            data: $('#data').serializeArray(),
+            success(data){
+                if(data.msg){
+                    displayMsg('msg', data.msg)
+                }else{
+                    saveTrail(data.studentId)
+                }
+            }
+            
+        })
+    }
+
+    function deleteTask(taskNum){
+        event.preventDefault()
+        var data = $('#data').serializeArray().concat({name: 'delete', value: taskNum})
+        
+        $.ajax({
+            url: '/admin/trail/edit/subtract',
+            method: 'post',
+            data: data,
+            success(res){
+                
+                var send = {
+                    delete: res.delete,
+                    howManySubjects: res.howManySubjects,
+                    howManyTasks: res.howManyTasks,
+                    levelsId: res.levelsId,
+                    studentId: res.studentId,
+                    subjectsId: res.subjectsId,
+                    tasksIndex: res.tasksIndex,
+                    trailNum: res.trailNum
+                }
+
+                window.location.replace(`/admin/trail/reload/${JSON.stringify({howManySubjects: res.howManySubjects,
+                                                                                howManyTasks: res.howManyTasks,
+                                                                                levelsId: res.levelsId,
+                                                                                studentId: res.studentId,
+                                                                                subjectsId: res.subjectsId,
+                                                                                tasksIndex: res.tasksIndex,
+                                                                                trailNum: res.trailNum})}`)
+            }
+            
+        })
+    }
+
+    
+</script>

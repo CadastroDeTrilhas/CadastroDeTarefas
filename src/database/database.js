@@ -2,10 +2,9 @@ const Sequilize = require('sequelize')
 const { Sequelize } = require('sequelize')
 
 
-const connection = new Sequelize('cadastrotarefas', 'root', '12345678', {
+const connection = new Sequelize('cadastrotarefas', 'root', '123456789', {
     host: 'localhost',
-    dialect: 'mysql',
-    timezone: '-03:00'
+    dialect: 'mysql'
 })
 
 module.exports = connection

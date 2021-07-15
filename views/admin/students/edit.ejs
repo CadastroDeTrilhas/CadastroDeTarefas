@@ -1,0 +1,51 @@
+<%- include ('../../partials/header.ejs') %>
+<%- include ('../../partials/adminNavbar.ejs') %>
+
+<br>
+<div class="container" style="background-color: #ffffff;">
+    <br>
+    <div class="card">
+        <div class="card-header">
+            <h2>Cadastro de alunos</h2>
+        </div>
+        <div class="card-body">
+            <form onsubmit="/admim/student/upadate" method="post" id="data" target="data">
+                <input type="text" class="form-control" name="name" value="<%= student.name%>" placeholder="<%= student.name%>"><br>
+                <input type="text" class="form-control" name="email" value="<%= student.email%>" placeholder="<%= student.email%>"><br>
+                <input type="text" class="form-control" id="password" name="password" placeholder=" nova senha "><br>
+                <input type="text" class="form-control" name="repet" id="repet" placeholder=" repetir a senha"><br>
+                <input type="hidden" name="studentId" id="studentId" value="<%= student.id %>">
+                <label id="mensage" style="color: red;"></label><br><br>
+                <button class="btn btn-primary" onclick="validatePassword()">Cadastrar</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<%- include ('../../partials/footer.ejs') %>
+
+<script src="https://code.jquery.com/jquery-3.5.0.js"></script>
+<script>
+    function validatePassword(){
+        event.preventDefault()
+        var password = document.getElementById('password').value
+        var repet = document.getElementById('repet').value
+        var studentId = document.getElementById('studentId').value
+        
+        if( password == repet){
+            document.getElementById('mensage').innerHTML = ''
+
+            $.ajax({
+            url: '/admin/student/update',
+            method: 'post',
+            data:  $('#data').serializeArray(),
+            success(res){
+                window.location.replace(`/admin/student/view/${studentId}`)
+            }
+        })
+        }else{
+            document.getElementById('mensage').innerHTML = 'Senhas não conferem'
+        }
+
+    }
+</script>

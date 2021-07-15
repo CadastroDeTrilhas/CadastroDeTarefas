@@ -9,7 +9,7 @@
             <h2>Cadastro de tarefas</h2>
         </div>
         <div class="card-body">
-            <form ref='uploadForm' id='uploadForm' action='/upload' method='post' encType="multipart/form-data">
+            <form ref='uploadForm' id='uploadForm' action='/admin/tasks/upload' method='post' encType="multipart/form-data">
 
                 <% if(num == 0){ %>
                     <input type="text" class="form-control" name="number" placeholder="Numero da tarefa"><br>
@@ -48,6 +48,7 @@
                 </select>
 
                 <br>
+                <input type="hidden" name="levelId" value="<%= levelId %>">
                 <input type="hidden" name="pageControl" value="<%= subjectId %>">
                 <button class="btn btn-primary">Cadastrar</button>
             </form>

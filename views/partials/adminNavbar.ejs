@@ -1,21 +1,35 @@
-<nav class="navbar navbar-light navbar-expand-lg" style="background-color: #0078d4;">
-    <a class="navbar-brand" href="/" style="background-color: #0078d4;">
-        <img src="/icons/navIcon.png" alt="">
-    </a>
+<nav class="navbar navbar-light navbar-expand-sm bg-gradient-primary" style="background-color: #0078d4;">
+    <div class="container">
+        <a class="navbar-brand" href="/" style="background-color: #0078d4;">
+            <img src="/icons/navIcon.png" alt="">
+        </a>
 
-    <ul class="navbar-nav mr-auto">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+                <a class="nav-link" href="/admin/students">Alunos</a>
+            </li>
+            <li>
+                <a class="nav-link" href="/admin/subjects">Matérias</a>
+            </li>
+            <li>
+                <a class="nav-link" href="/admin/levels">Nível</a>
+            </li>
+            <li>
+                <a class="nav-link" href="/admin/tasks">Tarefas</a>
+            </li>
+            <li>
+                <a class="nav-link" href="/admin/cover">Capa</a>
+            </li>
+            <li>
+                <a class="nav-link" href="/admin/admins">Admins</a>
+            </li>
+        </ul>
 
-        <li class="nav-item">
-            <a class="nav-link" href="/admin/students">Alunos</a>
-        </li>
-        <li>
-            <a class="nav-link" href="/admin/subjects">Matérias</a>
-        </li>
-        <li>
-            <a class="nav-link" href="/admin/levels">Nível</a>
-        </li>
-        <li>
-            <a class="nav-link" href="/admin/tasks">Tarefas</a>
-        </li>
-    </ul>
+        <ul class="navbar-nav ml-auto">
+            <a type="button" href="/admin/notification" class="btn btn-primary" style="background-color: #0078d4; border-color: #0078d4;">
+                <img src="/icons/notification.png" alt=""> <span class="badge badge-light">0</span>
+                <span class="sr-only">unread messages</span>
+            </a>          
+        </ul>
+    </div>
 </nav>

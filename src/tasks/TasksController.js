@@ -7,37 +7,37 @@ const multer = require('multer')
 const multerConfig = require('../config/multer')
 const aws = require('aws-sdk')
 const Level = require('../level/Level')
+const adminAuth = require('../middleware/adminAuth')
 
 const s3 = new aws.S3()
 
 
-router.get('/admin/tasks', (req, res) => { // Tela inicial das tarefas
+router.get('/admin/tasks', adminAuth, (req, res) => { // Tela inicial das tarefas
 
     Task.findAll({
         include: [{model: Subject}]
     }).then( tasks => {
         if(tasks != undefined){
-                res.render('admin/tasks/index', {tasks: tasks})
+            res.render('admin/tasks/index', {tasks: tasks, subjectTitle: tasks[0].subject.title})
         }else{
             res.redirect('/')
         }
         
     }).catch( err => {
-        console.log(err)
+        
     })
 })
 
-router.post('/admin/tasks/new', (req, res) => { // Tela para cadastrar uma nova tarefa
+router.post('/admin/tasks/new', adminAuth, (req, res) => { // Tela para cadastrar uma nova tarefa
 
     Subject.findAll().then( subjects => {
         Level.findAll().then( levels => {
             res.render('admin/tasks/new', {subjects: subjects, levels: levels, num: req.body.nextNum, subjectId: req.body.sub, levelId: req.body.level })
         })
-        
     })
 })
 
-router.post('/upload',multer(multerConfig).single('file'), (req, res) => { // Cria uma nova tarefa, cadastrando o pdf na amazon e os dados do BD
+router.post('/admin/tasks/upload',multer(multerConfig).single('file'), adminAuth, (req, res) => { // Cria uma nova tarefa, cadastrando o pdf na amazon e os dados do BD
 
     var num = req.body.number
     var subject = req.body.sub
@@ -56,7 +56,7 @@ router.post('/upload',multer(multerConfig).single('file'), (req, res) => { // Cr
         if(req.body.pageControl == 0){
             res.redirect('admin/tasks')
         }else{
-            res.redirect(`admin/tasks/${req.body.pageControl}`)
+            res.redirect(`/admin/tasks/${req.body.pageControl}/${level}`)
         }
         
     }).catch(err => {
@@ -64,7 +64,7 @@ router.post('/upload',multer(multerConfig).single('file'), (req, res) => { // Cr
     }) 
 })
 
-router.get('/admin/tasks/:id', (req, res) => { // Tela com as tarefas por materia 
+router.get('/admin/tasks/:id', adminAuth, (req, res) => { // Tela com as tarefas por materia 
 
     Task.findAll({
         where:{
@@ -96,13 +96,13 @@ router.get('/admin/tasks/:id', (req, res) => { // Tela com as tarefas por materi
                     levels.push(task.level)
                 }
             })
-            res.render('admin/tasks/taskSub', {tasks: tasks, levels: levels})
+            res.render('admin/tasks/taskSub', {tasks: tasks, levels: levels, level: -1})
         }
     })
 })
 
-router.get('/admin/tasks/:subject/:level', (req, res) => {
-    
+router.get('/admin/tasks/:subject/:level', adminAuth, (req, res) => {
+
     Task.findAll({
         where:{
             subjectId: req.params.subject
@@ -141,13 +141,13 @@ router.get('/admin/tasks/:subject/:level', (req, res) => {
                     _tasks.push(task)
                 }
             })
-            res.render('admin/tasks/taskSub', {tasks: _tasks, levels: levels})
+            res.render('admin/tasks/taskSub', {tasks: _tasks, levels: levels, level: req.params.level})
         }
     })
     
 })
 
-router.get('/admin/task/:id', (req, res) => { // Tela que mostra uma unica tarefa
+router.get('/admin/task/:id', adminAuth, (req, res) => { // Tela que mostra uma unica tarefa
 
     var id = req.params.id
 
@@ -175,7 +175,7 @@ router.get('/admin/task/:id', (req, res) => { // Tela que mostra uma unica taref
 
 })
 
-router.post('/admin/task/delete', (req, res) => { // Deleta uma tarefa, apagando o pdf da amazon e os dados do BD
+router.post('/admin/task/delete', adminAuth, (req, res) => { // Deleta uma tarefa, apagando o pdf da amazon e os dados do BD
 
     var id = req.body.id
     var key = req.body.key
@@ -201,7 +201,9 @@ router.post('/admin/task/delete', (req, res) => { // Deleta uma tarefa, apagando
                 }).then(tasks => {
             
                     if(tasks.length > 0){
-                        res.render('admin/tasks/taskSub', {tasks: tasks})
+                        Level.findAll().then(levels => {
+                            res.redirect(`/admin/tasks/${subId}/${req.body.level}`)
+                        })
                     }else{
                         Subject.findAll().then( subjects => {
                             res.redirect('/admin/subjects')
@@ -210,15 +212,15 @@ router.post('/admin/task/delete', (req, res) => { // Deleta uma tarefa, apagando
                 })
             })
         }else{
-            res.redirect('/admin/tasks')
+            res.redirect(`/admin/tasks/${subId}`)
         }
     }else{
-        res.redirect('/admin/tasks')
+        res.redirect(`/admin/tasks/${subId}`)
     }
 
 })
 
-router.get('/admin/task/edit/:id', (req, res) => { // Tela para editar tarefas 
+router.get('/admin/task/edit/:id', adminAuth, (req, res) => { // Tela para editar tarefas 
 
     var id = req.params.id
 
@@ -242,7 +244,7 @@ router.get('/admin/task/edit/:id', (req, res) => { // Tela para editar tarefas
     }
 })
 
-router.post('/admin/task/update', multer(multerConfig).single('file'), (req, res) => { /* Edita uma tarefa, apagando o pdf antigo e subindo um novo na amazon e 
+router.post('/admin/task/update', multer(multerConfig).single('file'), adminAuth, (req, res) => { /* Edita uma tarefa, apagando o pdf antigo e subindo um novo na amazon e 
                                                                                           atualizando os dados no BD */
 
     var id = req.body.id

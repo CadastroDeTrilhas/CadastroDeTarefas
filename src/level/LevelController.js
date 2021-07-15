@@ -3,19 +3,19 @@ const router = express.Router()
 const Level = require('./Level')
 const Subject = require('../subjects/Subject')
 const slugify = require('slugify')
+const adminAuth = require('../middleware/adminAuth')
 
-router.get('/admin/levels', (req, res) => {
+router.get('/admin/levels', adminAuth, (req, res) => {
     Level.findAll().then(levels => {
         res.render('admin/levels/index', {levels})
     })
 })
 
-router.post('/admin/levels/new', (req, res) => {
-    console.log('bosta')
+router.post('/admin/levels/new', adminAuth, (req, res) => {
     res.render('admin/levels/new') 
 })
 
-router.post('/admin/levels/save', (req, res) => {
+router.post('/admin/levels/save', adminAuth, (req, res) => {
 
     var title = req.body.title
     var slug = slugify(title)

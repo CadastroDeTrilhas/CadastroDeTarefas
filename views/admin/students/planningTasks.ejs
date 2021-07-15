@@ -1,0 +1,62 @@
+<%- include ('../../partials/header.ejs') %>
+<%- include ('../../partials/adminNavbar.ejs') %>
+
+
+<br>  
+<div class="container" style="background-color: #ffffff;">
+
+    <br>
+    <h2>Tarefas</h2><br>
+    <hr>
+
+    <form action="/admin/student/planning" method="POST" >
+
+        <h5>Nível</h5>
+        <select name="levelId" id="list" class="form-control" onchange="getSelectValue();">
+            <% levels.forEach((level) => { %>
+                <% if(level.id == levelSelected){ %>
+                    <option value="<%= level.id %>" selected><%= level.title %></option>
+                <% }else{%>
+                    <option value="<%= level.id %>"><%= level.title %></option>
+                <% }%>
+            <% }) %>
+        </select>
+
+        <br><br>
+
+        <%  for(i = 0; i < howMany; i++){%>
+            <div class="form-check">
+                <% if(planning.indexOf(i+1) != -1){%>
+                    <input class="form-check-input" type="checkbox" value="<%= i %>" id="<%= i %>" name="<%=i%>" checked>
+                    <label class="form-check-label" for="flexCheckDefault">
+                    <h4> Tarefa <%= i+1 %></h4>
+                    </label>
+                <% }else{ %>
+                    <input class="form-check-input" type="checkbox" value="<%= i %>" id="<%= i %>" name="<%=i%>">
+                    <label class="form-check-label" for="flexCheckDefault">
+                    <h4> Tarefa <%= i+1 %></h4>
+                    </label>
+                <% }%>
+            </div>
+        <%  } %>
+
+        <hr>
+
+        <input type="hidden" name="studentId" value="<%= studentId %>">            
+        <input type="hidden" name="subjectId" value="<%= subjectId %>">
+        <button class="btn btn-primary">Enviar</button><br><br>
+    </form>
+
+</div><br>
+
+<script>
+
+    function getSelectValue(){
+        var value = document.getElementById('list').value
+        var arguments = window.location.pathname.split('/')
+        
+        window.location.replace(`/admin/student/planning/${arguments[4]}/${arguments[5]}/${value}`)
+    }
+</script>
+
+<%- include ('../../partials/footer.ejs') %>

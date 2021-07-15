@@ -1,0 +1,51 @@
+<%- include ('../partials/header.ejs') %>
+<%- include ('../partials/userNavbar.ejs') %>
+
+<br>
+<div class="container" style="background-color: #ffffff;">
+    <br>
+    <div class="card">
+        <div class="card-header">
+            <h2>Editar</h2>
+        </div>
+        <div class="card-body">
+            <form method="post" id="data" target="data">
+                <input type="text" class="form-control" name="name" value="<%= user.name%>" placeholder="<%= user.name%>"><br>
+                <input type="text" class="form-control" name="email" value="<%= user.email%>" placeholder="<%= user.email%>"><br>
+                <input type="text" class="form-control" id="password" name="password" placeholder=" nova senha "><br>
+                <input type="text" class="form-control" name="repet" id="repet" placeholder=" repetir a senha"><br>
+                <label id="mensage" style="color: red;"></label><br><br>
+                <button class="btn btn-primary" onclick="validatePassword()">Cadastrar</button>
+            </form>
+        </div>
+    </div>
+    <br>
+</div>
+
+<%- include ('../partials/footer.ejs') %>
+
+<script src="https://code.jquery.com/jquery-3.5.0.js"></script>
+<script>
+    function validatePassword(){
+        event.preventDefault()
+        
+        var password = document.getElementById('password').value
+        var repet = document.getElementById('repet').value
+        
+        if( password == repet){
+            document.getElementById('mensage').innerHTML = ''
+
+            $.ajax({
+            url: '/user/update',
+            method: 'post',
+            data:  $('#data').serializeArray(),
+            success(res){
+                window.location.replace(`/user/profile`)
+            }
+        })
+        }else{
+            document.getElementById('mensage').innerHTML = 'Senhas não conferem'
+        }
+
+    }
+</script>
