@@ -103,31 +103,17 @@ router.get('/user/trailPdf/:trailId', userAuth, (req, res) => {
                 where:{
                     id: trailId
                 }
-            }).then( () => {
-                Trail.findAll({
-                    where:{trailsLinkId: trailId},
-                    include: [{model: TrailsLink}]
-                }).then(trail => {
-                    User.findOne({
-                        where:{id: studentId}
-                    }).then(student => {
-                        getTasksLinks(trail, studentId, student.name, trail[0].trailsLink.number).then(pdfDoc => {
-                            res.contentType('application/pdf')
-                            res.download(`./${pdfDoc}`)
-                        })
-                    })
-                })
-            })
-        }else{
-            User.findOne({
-                where:{id: studentId}
-            }).then(student => {
-                getTasksLinks(trail, studentId, student.name, trail[0].trailsLink.number).then(pdfDoc => {
-                    res.contentType('application/pdf')
-                    res.download(`./${pdfDoc}`)
-                })
             })
         }
+
+        User.findOne({
+            where:{id: studentId}
+        }).then(student => {
+            getTasksLinks(trail, studentId, student.name, trail[0].trailsLink.number).then(pdfDoc => {
+                res.contentType('application/pdf')
+                res.download(`./${pdfDoc}`)
+            })
+        })
     })
 })
 

@@ -1,46 +1,48 @@
 ----- Bug
 
-	Adicionar materia não está no cadastro de trilha.
+	Adicionar materia nï¿½o estï¿½ no cadastro de trilha.
 
-	Capa está voltando para a primeira 
+	Capa estï¿½ voltando para a primeira    ---  ok  --- 
 
-	Na area do aluno, mudar tarefas para trilha
+	Na area do aluno, mudar tarefas para trilha     --- ok ---
+
+	Trilhas estÃ£o vindo erradas
 
 
 - Adicionar professores
 	
-	º Alunos em baixo de um professor.
-	º Niveis de usuarios ( usuario para cadastro, usuario 		  para adicionar alunos e um master).
-	º
+	ï¿½ Alunos em baixo de um professor.
+	ï¿½ Niveis de usuarios ( usuario para cadastro, usuario 		  para adicionar alunos e um master).
+	ï¿½
 
 - Adicionar novas areas para as materias
 	
-	º Selecionar area padrão da trilha.
-	º 
+	ï¿½ Selecionar area padrï¿½o da trilha.
+	ï¿½ 
 
 - Visualizar ultima trilha e data de uma maneira mais rapida
 
-	º Botão para visualizar trilha na pagina de alunos
+	ï¿½ Botï¿½o para visualizar trilha na pagina de alunos
 
-- ordem alfabetica das materias na criação de trilha
+- ordem alfabetica das materias na criaï¿½ï¿½o de trilha    ---  ok  ---
 
 - Inserir trilha externa na pagina do aluno
 
 - Inserir feedback para o aluno
 
-	º em texto ou em video
+	ï¿½ em texto ou em video
 
 - Carregar PDF extra no fim como arquivo externo 
 
-- Notificações
+- Notificaï¿½ï¿½es
 
-	º Trilha nova para o aluno
-	º Aluno pedir trilha nova
-	º Trilha do aluno vencendo
-	º Feedback novo para o aluno
-	º Trilhas de aluno vencendo
+	ï¿½ Trilha nova para o aluno
+	ï¿½ Aluno pedir trilha nova
+	ï¿½ Trilha do aluno vencendo
+	ï¿½ Feedback novo para o aluno
+	ï¿½ Trilhas de aluno vencendo
 
 - Pedido de trilha
 
-	º campo no BD para trilha baixada
-	º notificação de nova trilha para o aluno
+	ï¿½ campo no BD para trilha baixada
+	ï¿½ notificaï¿½ï¿½o de nova trilha para o aluno

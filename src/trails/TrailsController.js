@@ -304,7 +304,8 @@ router.get('/admin/trail/new/edit/:studentId', adminAuth, (req, res) => {
                             var howManyTasks = resul.howManyTasks
                             var tasksIndex = resul.index
                             var levelsControl = resul.levels
-                            res.render('admin/trails/edit', {studentId, howManySubjects, covers, trailNum, subjects, levels, subjectsControl, howManyTasks, tasksIndex, levelsControl, msg: undefined, update: false})
+                            var coverControl = 0
+                            res.render('admin/trails/edit', {studentId, howManySubjects, covers, trailNum, subjects, levels, subjectsControl, coverControl, howManyTasks, tasksIndex, levelsControl, msg: undefined, update: false})
                         })
                     })
                 })
@@ -340,11 +341,14 @@ router.post('/admin/trail/edit/sum', adminAuth, (req, res) => {
     var howManyTasks = data.howManyTasks
     var tasksIndex = data.tasksIndex
     var levelsControl = data.levelsId
+    var coverControl = data.coverId
 
     Subject.findAll({order:[['title']]}).then( subjects => {
         Level.findAll({}).then( levels => {
             Cover.findAll({}).then( covers => {
-                res.render('admin/trails/edit', {studentId, howManySubjects, covers, trailNum, subjects, levels, subjectsControl, howManyTasks, tasksIndex, levelsControl, msg: undefined, update: false})
+                res.render('admin/trails/edit', {studentId, howManySubjects, covers, trailNum, subjects, 
+                                                 levels, subjectsControl, howManyTasks, tasksIndex, levelsControl, coverControl,
+                                                 msg: undefined, update: false})
             })
         })
     })
@@ -568,6 +572,7 @@ async function getTasksNum(trail, studentId){
 async function getTasksLinks(trail, studentId, name, trailNumber){
 
     var tasks = []
+
     for(i = 0; i < trail.length; i++){
         tasks.push(await exclusionTasks(trail[i], studentId))
     }
@@ -581,6 +586,8 @@ async function getTasksLinks(trail, studentId, name, trailNumber){
         }
         urlTasks.push(aux)  
     }
+
+    console.log(urlTasks)
 
     urlTasks = shuffleTasks(urlTasks)
 
