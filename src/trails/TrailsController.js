@@ -492,6 +492,7 @@ function saveTrailsLink(count, coverId, studentId){
             number: count,
             cover: coverId,
             studentId: studentId,
+            enabled: true,
             view: false
         }).then(resul => {
             resolve(resul.id)

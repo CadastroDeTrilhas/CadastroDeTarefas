@@ -14,17 +14,17 @@
         </li>
         <% if(automaticTrail){%>
             <li class="nav-item">
-                <a class="nav-link active disable" href="">Próximas trilhas</a>
+                <a class="nav-link active" href="">Próximas trilhas</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="">Trilhas anteriores</a>
+                <a class="nav-link" href="/admin/student/lastTrails/<=% student.id %>">Trilhas anteriores</a>
             </li>
         <% }%>
         <li class="nav-item">
-            <a class="nav-link" href="/admin/trails/howMany/<%= student.id %>">Cadastrar nova trilha</a>
+            <a class="nav-link" href="/admin/student/planning/<%=student.id %>">Planejamento</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="/admin/student/planning/<%=student.id %>">Planejamento</a>
+            <a class="nav-link" href="/admin/trails/howMany/<%= student.id %>">Cadastrar nova trilha</a>
         </li>
         <% if(automaticTrail){%>
             <li class="nav-item">

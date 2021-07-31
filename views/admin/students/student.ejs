@@ -8,43 +8,55 @@
     <h5><%= student.email %></h5>
     <hr>
 
-    <a href="/admin/trails/howMany/<%= student.id %>" class="btn btn-primary">Cadastrar nova trilha</a>
-    <% if(automaticTrail){%>
-        <button class="btn btn-primary" onclick="openPopup(event)">Gerar Trilha automática</button>
-    <% }%>
-    <a href="/admin/student/planning/<%=student.id %>" class="btn btn-primary">Planejamento</a>
-    <hr>
+    <ul class="nav nav-tabs">
+        <li class="nav-item">
+            <a class="nav-link active" href="/admin/student/view/<%= student.id %>">Trilha atual</a>
+        </li>
+        <% if(automaticTrail){%>
+            <li class="nav-item">
+                <a class="nav-link" href="">Próximas trilhas</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/admin/student/lastTrails/<%= student.id %>">Trilhas anteriores</a>
+            </li>
+        <% }%>
+        <li class="nav-item">
+            <a class="nav-link" href="/admin/student/planning/<%=student.id %>">Planejamento</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="/admin/trails/howMany/<%= student.id %>">Cadastrar nova trilha</a>
+        </li>
+        <% if(automaticTrail){%>
+            <li class="nav-item">
+                <a class="nav-link" onclick="openPopup(event)">Gerar trilha automática</a>
+            </li>
+        <% }%>
+    </ul><br>
 
     <div class="container">
 
-        <input type="hidden" namme="flag" value="<%= flag = true %>">
-        <% trails.forEach(trails => { %>
-            <% if(flag){ %>
-                <div class="card">
-                    <div class="card-header">
-                        <h2>Trilha <%= trails.number %></h2>
-                    </div>
+        <% if(trailNum){%>
+            <br>
+            <h1>Trilha <%= trailNum%></h1>
+            <a href="/admin/trail/edit/<%= trailId %>/<%= student.id %>" class="btn btn-primary">Editar</a>
+            <a href="/admin/trail/delete/<%= trailId %>/<%= student.id %>" class="btn btn-danger">Apagar</a>
+            <a href="/admin/trailPdf/<%= trailId %>/<%= student.id %>" class="btn btn-primary">Gerar Pdf</a>
+            <div class="card-body" ></div>
+            <div class="card-header" style="border: 1px solid rgb(155, 154, 154)">
+                <% trail.forEach(resul => {%>
                     <div class="card-body">
-                        <a href="/admin/trail/view/<%= trails.id %>/<%= student.id %>/<%= 1 %>" class="btn btn-primary">Ver trilha</a>
-                        <input type="hidden" namme="flag" value="<%= flag = false %>">
-                    </div>
-                </div>
-                <br>
-            <% }else{ %>
-                <div class="card">
-                    <div class="card-header">
-                        <h2>Trilha <%= trails.number %></h2>
-                    </div>
-                    <div class="card-body">
-                        <a href="/admin/trail/view/<%= trails.id %>/<%= student.id %>/<%= -1 %>" class="btn btn-primary">Ver trilha</a>
-                    </div>
-                </div>
-                <br>
-            <% } %>
-        <% }) %> 
-
-    </div>
-    
+                        <h3><%= subjects[1][subjects[0].indexOf(resul.subject)] %></h3>
+                        <h5>Nível: <%= levels[1][levels[0].indexOf(resul.level)] %></h5>
+                        <h5>Numero de tarefas: <%= resul.howManyTask %></h5>
+                        <h5>Tarefas: <%= tasks[1][tasks[0].indexOf(resul.subject)] %></h5>
+                    </div><hr> 
+                <% }) %>        
+            </div>
+            <br>
+        <% } else {%>
+            <h3 style="color: red;">Aluno não tem tarefas cadastradas</h3>
+            <br>
+        <% }%>
 </div>
 
 <div id="myModal" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">

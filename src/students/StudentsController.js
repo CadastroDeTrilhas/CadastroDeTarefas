@@ -62,6 +62,48 @@ router.get('/admin/student/view/:studentId', adminAuth, (req, res) => {
 
     var studentId = req.params.studentId
 
+    TrailsLink.findAll({
+        where: {studentId: studentId, enabled: true},
+        order: [['updatedAt', 'DESC']],
+        limit: 1,
+        include: [{model: Trails}]
+
+    }).then(trailLiink => {
+
+        if(trailLiink.length > 0){
+            var trail = trailLiink[0].trails
+            var trailId = trailLiink[0].id
+            var trailNum = trailLiink[0].number
+
+            Student.findByPk(studentId).then(student => {
+                Subject.findAll({order:[['title']]}).then( _subjects => {
+                    var subjects = [_subjects.map( function(subject) {return subject.id}), _subjects.map( function(subject) {return subject.title })]  
+                    Level.findAll({}).then( _levels => {
+                        var levels = [_levels.map( function(level) {return level.id}), _levels.map( function(level) {return level.title})]
+                        getTasksNum(trail, studentId).then( tasks => {
+                            var tasks = [tasks.map( function(task) {return task.subjectId}), tasks.map( function(task) {return task.numbers })]
+                            tasks[1] = tasks[1].map( function(task) {return JSON.stringify(task)})
+                            tasks[1] = tasks[1].map( function(task) {return task.slice(1, -1)})
+                            tasks[1] = tasks[1].map( function(task) {return task.replace(/,/g, ', ')})
+                            res.render('admin/students/student', {subjects, levels, trail, trailId, student, trailNum, tasks, automaticTrail:1})
+                        })
+                    })
+                })
+            })
+        } else {
+            Student.findByPk(studentId).then( student => {
+                res.render('admin/students/student', {student, automaticTrail:0, trailNum: false})
+            })
+        }
+    }).catch( err => {
+        console.log(err)
+    })
+})
+
+router.get('/admin/student/lastTrails/:studentId', adminAuth, (req, res) => {
+
+    var studentId = req.params.studentId
+
     if(isNaN(studentId)){
         res.redirect('admin/students')
     }else{
@@ -72,8 +114,9 @@ router.get('/admin/student/view/:studentId', adminAuth, (req, res) => {
                         studentId
                     }, order:[['number', 'DESC']]
                     }).then( trails => {
+                        trails.shift()
                         var automaticTrail = trails.length < 1 ? false : true
-                        res.render('admin/students/student', {student, trails, automaticTrail})
+                        res.render('admin/students/previus', {student, trails, automaticTrail})
                     })
             }else{
                 res.redirect('/admin/student')
@@ -265,6 +308,45 @@ async function deleteStudent(studentId){
         }
     }).catch( err => {
         
+    })
+}
+
+async function getTasksNum(trail, studentId){
+    var tasks = []
+    for(i = 0; i < trail.length; i++){
+        tasks.push(await exclusionTasks(trail[i], studentId))
+    }
+    return tasks
+}
+
+function exclusionTasks(trail, studentId){
+
+    return new Promise(resolve => {
+
+        var exclusion = []
+
+        Planning.findAll({
+            where:{
+                subjectId:trail.subject,
+                levelId: trail.level,
+                studentId: studentId
+            }
+        }).then(resul => {
+            exclusion = resul.map( function(task){ return task.num})
+
+            var numbers = []
+            var element = trail.index 
+
+            while (numbers.length < trail.howManyTask) {
+                if(exclusion.indexOf(element) == -1){
+                    numbers.push(element)
+                }
+                element++
+            }
+            resolve({subjectId:trail.subject, 
+                     levelId: trail.level,
+                     numbers: numbers})    
+        })
     })
 }
 

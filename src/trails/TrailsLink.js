@@ -9,6 +9,9 @@ const TrailsLink = connection.define('trailsLink', {
     }, cover: {
         type: Sequelize.INTEGER,
         allowNull: false
+    }, enabled: {
+        type: Sequelize.BOOLEAN,
+        allowNull: false
     }, view: {
         type: Sequelize.BOOLEAN,
         allowNull: false
